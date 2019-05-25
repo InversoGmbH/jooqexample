@@ -18,9 +18,10 @@ jooq {
             password = ''
         }
         generator {
-            name = 'org.jooq.codegen.DefaultGenerator'
+            name = 'org.jooq.codegen.JavaGenerator'            
             database {
                 name = 'org.jooq.meta.h2.H2Database'
+                //name = 'org.jooq.meta.jdbc.JDBCDatabase'
                 includes = '.*'
                 excludes = ''
             }

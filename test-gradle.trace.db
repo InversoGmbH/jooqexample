@@ -1,0 +1,122 @@
+2019-05-25 18:45:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Feld "INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE" nicht gefunden
+Column "INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE" not found; SQL statement:
+select "INFORMATION_SCHEMA"."COLUMNS"."COLUMN_TYPE" from "INFORMATION_SCHEMA"."COLUMNS" where 1 = 0 [42122-193]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.command.dml.Select.prepare(Select.java:853)
+	at org.h2.command.Parser.prepareCommand(Parser.java:259)
+	at org.h2.engine.Session.prepareLocal(Session.java:561)
+	at org.h2.engine.Session.prepareCommand(Session.java:502)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1203)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:287)
+	at org.jooq.impl.ProviderEnabledConnection.prepareStatement(ProviderEnabledConnection.java:109)
+	at org.jooq.impl.SettingsEnabledConnection.prepareStatement(SettingsEnabledConnection.java:73)
+	at org.jooq.impl.AbstractResultQuery.prepare(AbstractResultQuery.java:239)
+	at org.jooq.impl.AbstractQuery.execute(AbstractQuery.java:322)
+	at org.jooq.impl.AbstractResultQuery.fetch(AbstractResultQuery.java:323)
+	at org.jooq.impl.SelectImpl.fetch(SelectImpl.java:2700)
+	at org.jooq.meta.h2.H2Database.is1_4_197(H2Database.java:562)
+	at org.jooq.meta.h2.H2Database.getEnums0(H2Database.java:473)
+	at org.jooq.meta.AbstractDatabase.getEnums(AbstractDatabase.java:1319)
+	at org.jooq.codegen.JavaGenerator.generateSchemaIfEmpty(JavaGenerator.java:416)
+	at org.jooq.codegen.JavaGenerator.generateCatalogIfEmpty(JavaGenerator.java:405)
+	at org.jooq.codegen.JavaGenerator.generate(JavaGenerator.java:379)
+	at org.jooq.codegen.GenerationTool.run(GenerationTool.java:752)
+	at org.jooq.codegen.GenerationTool.generate(GenerationTool.java:222)
+	at org.jooq.codegen.GenerationTool.main(GenerationTool.java:194)
+2019-05-25 18:47:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Feld "INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE" nicht gefunden
+Column "INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE" not found; SQL statement:
+select "INFORMATION_SCHEMA"."COLUMNS"."COLUMN_TYPE" from "INFORMATION_SCHEMA"."COLUMNS" where 1 = 0 [42122-193]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.command.dml.Select.prepare(Select.java:853)
+	at org.h2.command.Parser.prepareCommand(Parser.java:259)
+	at org.h2.engine.Session.prepareLocal(Session.java:561)
+	at org.h2.engine.Session.prepareCommand(Session.java:502)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1203)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:287)
+	at org.jooq.impl.ProviderEnabledConnection.prepareStatement(ProviderEnabledConnection.java:109)
+	at org.jooq.impl.SettingsEnabledConnection.prepareStatement(SettingsEnabledConnection.java:73)
+	at org.jooq.impl.AbstractResultQuery.prepare(AbstractResultQuery.java:239)
+	at org.jooq.impl.AbstractQuery.execute(AbstractQuery.java:322)
+	at org.jooq.impl.AbstractResultQuery.fetch(AbstractResultQuery.java:323)
+	at org.jooq.impl.SelectImpl.fetch(SelectImpl.java:2700)
+	at org.jooq.meta.h2.H2Database.is1_4_197(H2Database.java:562)
+	at org.jooq.meta.h2.H2Database.getEnums0(H2Database.java:473)
+	at org.jooq.meta.AbstractDatabase.getEnums(AbstractDatabase.java:1319)
+	at org.jooq.codegen.JavaGenerator.generateSchemaIfEmpty(JavaGenerator.java:416)
+	at org.jooq.codegen.JavaGenerator.generateCatalogIfEmpty(JavaGenerator.java:405)
+	at org.jooq.codegen.JavaGenerator.generate(JavaGenerator.java:379)
+	at org.jooq.codegen.GenerationTool.run(GenerationTool.java:752)
+	at org.jooq.codegen.GenerationTool.generate(GenerationTool.java:222)
+	at org.jooq.codegen.GenerationTool.main(GenerationTool.java:194)
+2019-05-25 18:48:05 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "SELECT P.ID COUNT([*]B.ID) ANZAHLFROM PERSON PJOIN BANKVERBINDUNG B ON P.ID = B.PERSON_ID
+GROUP BY P.ID
+HAVING ANZAHL>1
+ORDER BY ANZAHL DESC
+ "
+Syntax error in SQL statement "SELECT P.ID COUNT([*]B.ID) ANZAHLFROM PERSON PJOIN BANKVERBINDUNG B ON P.ID = B.PERSON_ID
+GROUP BY P.ID
+HAVING ANZAHL>1
+ORDER BY ANZAHL DESC
+ "; SQL statement:
+select p.ID count(b.ID) anzahlfrom PERSON pjoin BANKVERBINDUNG B on p.ID = B.PERSON_ID
+group by p.ID
+having anzahl>1
+order by anzahl desc
+ [42000-199]
+2019-05-25 18:56:56 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Feld "INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE" nicht gefunden
+Column "INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE" not found; SQL statement:
+select "INFORMATION_SCHEMA"."COLUMNS"."COLUMN_TYPE" from "INFORMATION_SCHEMA"."COLUMNS" where 1 = 0 [42122-193]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.command.dml.Select.prepare(Select.java:853)
+	at org.h2.command.Parser.prepareCommand(Parser.java:259)
+	at org.h2.engine.Session.prepareLocal(Session.java:561)
+	at org.h2.engine.Session.prepareCommand(Session.java:502)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1203)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:73)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:287)
+	at org.jooq.impl.ProviderEnabledConnection.prepareStatement(ProviderEnabledConnection.java:109)
+	at org.jooq.impl.SettingsEnabledConnection.prepareStatement(SettingsEnabledConnection.java:73)
+	at org.jooq.impl.AbstractResultQuery.prepare(AbstractResultQuery.java:239)
+	at org.jooq.impl.AbstractQuery.execute(AbstractQuery.java:322)
+	at org.jooq.impl.AbstractResultQuery.fetch(AbstractResultQuery.java:323)
+	at org.jooq.impl.SelectImpl.fetch(SelectImpl.java:2700)
+	at org.jooq.meta.h2.H2Database.is1_4_197(H2Database.java:562)
+	at org.jooq.meta.h2.H2Database.getEnums0(H2Database.java:473)
+	at org.jooq.meta.AbstractDatabase.getEnums(AbstractDatabase.java:1319)
+	at org.jooq.codegen.JavaGenerator.generateSchemaIfEmpty(JavaGenerator.java:416)
+	at org.jooq.codegen.JavaGenerator.generateCatalogIfEmpty(JavaGenerator.java:405)
+	at org.jooq.codegen.JavaGenerator.generate(JavaGenerator.java:379)
+	at org.jooq.codegen.GenerationTool.run(GenerationTool.java:752)
+	at org.jooq.codegen.GenerationTool.generate(GenerationTool.java:222)
+	at org.jooq.codegen.GenerationTool.main(GenerationTool.java:194)
+2019-05-25 18:57:01 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "SELECT P.ID COUNT([*]B.ID) ANZAHLFROM PERSON PJOIN BANKVERBINDUNG B ON P.ID = B.PERSON_ID
+GROUP BY P.ID
+HAVING ANZAHL>1
+ORDER BY ANZAHL DESC
+ "
+Syntax error in SQL statement "SELECT P.ID COUNT([*]B.ID) ANZAHLFROM PERSON PJOIN BANKVERBINDUNG B ON P.ID = B.PERSON_ID
+GROUP BY P.ID
+HAVING ANZAHL>1
+ORDER BY ANZAHL DESC
+ "; SQL statement:
+select p.ID count(b.ID) anzahlfrom PERSON pjoin BANKVERBINDUNG B on p.ID = B.PERSON_ID
+group by p.ID
+having anzahl>1
+order by anzahl desc
+ [42000-199]

@@ -1,7 +1,5 @@
 package de.inverso.jooqexample;
 
-import de.inverso.jooqexample.PersistenceUtil;
-
 import javax.persistence.EntityManager;
 
 
@@ -12,6 +10,6 @@ import javax.persistence.EntityManager;
 public abstract class AbstractTest {
 
     protected static EntityManager em() {
-        return PersistenceUtil.getEntityManager();
+        return DatabaseUtil.getEntityManager();
     }
 }

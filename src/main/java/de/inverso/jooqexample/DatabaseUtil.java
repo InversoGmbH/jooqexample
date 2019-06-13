@@ -21,7 +21,7 @@ import java.util.List;
  * @author fabian
  * on 17.05.19.
  */
-public final class PersistenceUtil {
+public final class DatabaseUtil {
 
     private static final String PERSISTENCE_UNIT_NAME = "test";
     private static EntityManagerFactory factory;
@@ -60,7 +60,7 @@ public final class PersistenceUtil {
         return entityManager.unwrap(Session.class).doReturningWork(worker);
     }
 
-    private PersistenceUtil() {
+    private DatabaseUtil() {
 
     }
 }

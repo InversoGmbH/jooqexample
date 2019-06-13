@@ -3,7 +3,7 @@ package de.inverso.jooqexample.testcases;
 import static org.jooq.impl.DSL.*;
 
 import de.inverso.jooqexample.AbstractTest;
-import de.inverso.jooqexample.PersistenceUtil;
+import de.inverso.jooqexample.DatabaseUtil;
 import de.inverso.jooqexample.dto.BankStatisticsDTO;
 import org.hibernate.transform.Transformers;
 import org.junit.jupiter.api.Assertions;
@@ -67,7 +67,7 @@ public class BasicSelectionTest extends AbstractTest {
         EntityManager entityManager = em();
         entityManager.getTransaction().begin();
 
-        final List<BankStatisticsDTO> statisticsDTOS = PersistenceUtil.nativeQueryWithDTO(entityManager,
+        final List<BankStatisticsDTO> statisticsDTOS = DatabaseUtil.nativeQueryWithDTO(entityManager,
                 select(pid.as("id"), anzahl).//
                         from(personTable).//
                         join(bankverbindungTable) //

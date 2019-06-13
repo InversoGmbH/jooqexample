@@ -8,9 +8,9 @@
 
     <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
         <class>de.inverso.jooqexample.model.Person</class>
-        <class>de.inverso.jooqexample.model.Bankverbindung</class>
-        <class>de.inverso.jooqexample.model.Antrag</class>
-        <class>de.inverso.jooqexample.model.Vermittler</class>
+        <class>de.inverso.jooqexample.model.BankDetails</class>
+        <class>de.inverso.jooqexample.model.Request</class>
+        <class>de.inverso.jooqexample.model.Broker</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

@@ -2,19 +2,23 @@ package de.inverso.jooqexample.testcases;
 
 import de.inverso.jooqexample.AbstractTest;
 import de.inverso.jooqexample.DatabaseUtil;
-import de.inverso.jooqexample.dto.VermittlerStatistic;
-import de.inverso.jooqexample.gen.public_.tables.Antrag;
-import de.inverso.jooqexample.gen.public_.tables.Vermittler;
-import de.inverso.jooqexample.gen.public_.tables.records.VermittlerRecord;
+import de.inverso.jooqexample.dto.BrokerStatistic;
+import de.inverso.jooqexample.gen.public_.tables.Broker;
+import de.inverso.jooqexample.gen.public_.tables.Request;
+import de.inverso.jooqexample.gen.public_.tables.records.BrokerRecord;
+import org.jooq.DatePart;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static de.inverso.jooqexample.gen.public_.tables.Vermittler.VERMITTLER;
+import static de.inverso.jooqexample.gen.public_.tables.Broker.*;
 import static org.jooq.impl.DSL.*;
 
 
@@ -26,54 +30,56 @@ import static org.jooq.impl.DSL.*;
 public class GeneratedClassesTest extends AbstractTest {
 
     @Test
-    public void selectVermittlerTest() {
+    public void selectBrokerTest() {
         EntityManager entityManager = em();
-        List<VermittlerRecord> result = DatabaseUtil.executeQuery(entityManager, connection ->
+        List<BrokerRecord> result = DatabaseUtil.executeQuery(entityManager, connection ->
                 DSL.using(connection)//
                         .select(asterisk()) //
-                        .from(VERMITTLER) //
-                        .where(VERMITTLER.FIRSTNAME.eq("Thomas")) //
-                        .fetchInto(VermittlerRecord.class));
+                        .from(BROKER) //
+                        .where(BROKER.FIRSTNAME.eq("Thomas")) //
+                        .fetchInto(BrokerRecord.class));
 
-        Logger.getAnonymousLogger().info("\n"+result.toString());
+        Logger.getAnonymousLogger().info("\n" + result.toString());
         Assertions.assertNotEquals(result.size(), 0);
         entityManager.close();
     }
 
-   @Test
+    @Test
     public void selectWithJoinTest() {
-        Vermittler v = VERMITTLER.as("v");
-        Antrag a = Antrag.ANTRAG.as("a");
+        Broker v = BROKER.as("v");
+        Request a = Request.REQUEST.as("a");
 
         EntityManager entityManager = em();
         final var result = DatabaseUtil.executeQuery(entityManager, connection ->
                 using(connection). //
-                        select(v.VERMITTLERNUMMER, count(a.ID).as("anzahl")). //
+                        select(v.BROKERID, count(a.ID).as("anzahl")). //
                         from(v). //
-                        join(a).on(a.VERMITTLERNUMMER.eq(v.VERMITTLERNUMMER)). //
-                        groupBy(v.VERMITTLERNUMMER). //
+                        join(a).on(a.BROKERID.eq(v.BROKERID)). //
+                        where(a.CREATIONDATE.ge( dateAdd( currentDate(), -1, DatePart.MONTH ))). //
+                        groupBy(v.BROKERID). //
                         orderBy(count(a.ID).desc()). //
                         fetch()
         );
-        Logger.getAnonymousLogger().info("\n"+result.toString());
+        Logger.getAnonymousLogger().info("\n" + result.toString());
     }
 
     @Test
     public void selectWithJoinDTOTest() {
-        Vermittler v = VERMITTLER.as("v");
-        Antrag a = Antrag.ANTRAG.as("a");
-
+        Broker v = BROKER.as("v");
+        Request a = Request.REQUEST.as("a");
+        Date.from(LocalDate.now().minusMonths(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         EntityManager entityManager = em();
         final var result = DatabaseUtil.executeQuery(entityManager, connection ->
                 using(connection). //
-                        select(v.VERMITTLERNUMMER, count(a.ID).as("anzahl")). //
+                        select(v.BROKERID.as("vermittlernummer"), count(a.ID).as("anzahl")). //
                         from(v). //
-                        join(a).on(a.VERMITTLERNUMMER.eq(v.VERMITTLERNUMMER)). //
-                        groupBy(v.VERMITTLERNUMMER). //
+                        join(a).on(a.BROKERID.eq(v.BROKERID)). //
+                        where(a.CREATIONDATE.ge( dateAdd( currentDate(), -1, DatePart.MONTH ))). //
+                        groupBy(v.BROKERID). //
                         orderBy(count(a.ID).desc()). //
-                        fetchInto(VermittlerStatistic.class)
+                        fetchInto(BrokerStatistic.class)
         );
-        Logger.getAnonymousLogger().info("\n"+result.toString());
+        Logger.getAnonymousLogger().info("\n" + result.toString());
     }
 
 }

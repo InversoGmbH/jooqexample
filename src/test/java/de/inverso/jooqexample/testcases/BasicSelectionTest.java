@@ -31,7 +31,7 @@ public class BasicSelectionTest extends AbstractTest {
         var bPersonId = field("b.person_id", Long.class);
         var anzahl = count(bid).as("anzahl");
         var personTable = table("PERSON p");
-        var bankverbindungTable = table("BANKVERBINDUNG b");
+        var bankverbindungTable = table("BANKDETAILS b");
 
         EntityManager entityManager = em();
         entityManager.getTransaction().begin();
@@ -63,7 +63,7 @@ public class BasicSelectionTest extends AbstractTest {
         var bPersonId = field("b.person_id", Long.class);
         var anzahl = count(bid).as("anzahl");
         var personTable = table("PERSON p");
-        var bankverbindungTable = table("BANKVERBINDUNG b");
+        var bankverbindungTable = table("BANKDETAILS b");
         EntityManager entityManager = em();
         entityManager.getTransaction().begin();
 

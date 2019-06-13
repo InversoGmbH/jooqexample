@@ -23,7 +23,7 @@ public class Person {
 
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "person_id")
-    private List<Bankverbindung> bankverbindungen;
+    private List<BankDetails> bankDetails;
 
     public Long getId() {
         return id;
@@ -49,12 +49,12 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public List<Bankverbindung> getBankverbindungen() {
-        return bankverbindungen;
+    public List<BankDetails> getBankDetails() {
+        return bankDetails;
     }
 
-    public void setBankverbindungen(List<Bankverbindung> bankverbindungen) {
-        this.bankverbindungen = bankverbindungen;
+    public void setBankDetails(List<BankDetails> bankDetails) {
+        this.bankDetails = bankDetails;
     }
 
     public Person(){

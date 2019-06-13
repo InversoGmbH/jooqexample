@@ -21,7 +21,7 @@ public class InvalidSqlTest extends AbstractTest {
                     //language=H2
                     String sql = "select p.ID count(b.ID) anzahl" +
                             "from PERSON p" +
-                            "join BANKVERBINDUNG B on p.ID = B.PERSON_ID\n" +
+                            "join BANKDETAILS B on p.ID = B.PERSON_ID\n" +
                             "group by p.ID\n" +
                             "having anzahl>1\n" +
                             "order by anzahl desc\n";

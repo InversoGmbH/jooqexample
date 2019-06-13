@@ -6,7 +6,7 @@ import java.math.BigInteger;
  * @author fabian
  * on 19.05.19.
  */
-public class VermittlerStatistic {
+public class BrokerStatistic {
 
     private String vermittlernummer;
 

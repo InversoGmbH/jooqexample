@@ -10,7 +10,7 @@ import javax.persistence.Id;
  * on 18.05.19.
  */
 @Entity
-public class Bankverbindung {
+public class BankDetails {
     @Id
     @GeneratedValue
     private Long id;
@@ -57,16 +57,16 @@ public class Bankverbindung {
         return personId;
     }
 
-    public Bankverbindung(){};
+    public BankDetails(){};
 
-    public Bankverbindung(String iban, String bic) {
+    public BankDetails(String iban, String bic) {
         this.iban = iban;
         this.bic = bic;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Bankverbindung{");
+        final StringBuilder sb = new StringBuilder("BankDetails{");
         sb.append("id=").append(id);
         sb.append(", iban='").append(iban).append('\'');
         sb.append(", bic='").append(bic).append('\'');

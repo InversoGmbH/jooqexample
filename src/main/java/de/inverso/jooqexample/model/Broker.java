@@ -10,7 +10,7 @@ import javax.persistence.Id;
  * on 18.05.19.
  */
 @Entity
-public class Vermittler {
+public class Broker {
 
     @Id
     @GeneratedValue
@@ -23,16 +23,16 @@ public class Vermittler {
     private String lastName;
 
     @Column(nullable = false)
-    private String vermittlernummer;
+    private String brokerId;
 
-    public Vermittler(){
+    public Broker(){
 
     }
 
-    public Vermittler(String firstName, String lastName, String vermittlernummer) {
+    public Broker(String firstName, String lastName, String brokerId) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.vermittlernummer = vermittlernummer;
+        this.brokerId = brokerId;
     }
 
     public Long getId() {
@@ -59,11 +59,11 @@ public class Vermittler {
         this.lastName = lastName;
     }
 
-    public String getVermittlernummer() {
-        return vermittlernummer;
+    public String getBrokerId() {
+        return brokerId;
     }
 
-    public void setVermittlernummer(String vermittlernummer) {
-        this.vermittlernummer = vermittlernummer;
+    public void setBrokerId(String brokerId) {
+        this.brokerId = brokerId;
     }
 }

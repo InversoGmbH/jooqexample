@@ -10,6 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "REQUEST")
+@NamedQuery(name = "requestWithProducts", query = "SELECT r from Request r join r.products")
 public class Request {
 
     @Id

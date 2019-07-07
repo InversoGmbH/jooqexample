@@ -11,6 +11,7 @@
         <class>de.inverso.jooqexample.model.BankDetails</class>
         <class>de.inverso.jooqexample.model.Request</class>
         <class>de.inverso.jooqexample.model.Broker</class>
+        <class>de.inverso.jooqexample.model.Product</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>

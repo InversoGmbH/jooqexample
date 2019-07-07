@@ -2,19 +2,19 @@ package de.inverso.jooqexample;
 
 import com.devskiller.jfairy.Fairy;
 import com.devskiller.jfairy.producer.payment.IBAN;
-
-import de.inverso.jooqexample.model.BankDetails;
-import de.inverso.jooqexample.model.Request;
-
-import de.inverso.jooqexample.model.Person;
-import de.inverso.jooqexample.model.Broker;
+import de.inverso.jooqexample.gen.tables.RequestProduct;
+import de.inverso.jooqexample.model.*;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -38,7 +38,7 @@ public abstract class AbstractTest {
             final int random = rn.nextInt(randomMax - randomMin + 1);
             Person p = createPerson(fairy.person());
             List<BankDetails> bankDetails = new ArrayList<>();
-            for(int j = 0 ; j<random; j++) {
+            for (int j = 0; j < random; j++) {
                 bankDetails.add(createBankDetails(fairy.iban()));
             }
             p.setBankDetails(bankDetails);
@@ -46,6 +46,22 @@ public abstract class AbstractTest {
         }
         transaction.commit();
         e.close();
+    }
+
+    private static void initProducts(Fairy fairy, Random rn) {
+        final List<String> branches = List.of("KR", "SA");
+        int randomMin = 10;
+        int randomMax = 100;
+        EntityManager entityManager = em();
+
+        final EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        for (int i = 0; i < fairy.baseProducer().randomBetween(randomMin, randomMax); i++) {
+            String productName = fairy.textProducer().latinWord(10);
+            Product product = new Product(productName, branches.get(rn.nextInt(branches.size())));
+            entityManager.persist(product);
+        }
+        transaction.commit();
     }
 
     @BeforeAll
@@ -58,9 +74,10 @@ public abstract class AbstractTest {
 
         final Fairy fairy = getFairy();
         final List<String> brokerIds = new LinkedList<>();
-        for(int i = 0; i<50; i++){
+        for (int i = 0; i < 50; i++) {
             brokerIds.add(fairy.baseProducer().numerify("#############"));
         }
+        initProducts(fairy, rn);
         initRequest(fairy, brokerIds);
         final EntityManager e = em();
         e.getTransaction().begin();
@@ -74,32 +91,48 @@ public abstract class AbstractTest {
 
     @AfterAll
     static void tearDown() {
-        var em  = em();
-       DatabaseUtil.executeQuery(em, connection -> {
-           DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Person.PERSON);
-           DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Request.REQUEST);
-           DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Broker.BROKER);
-           return DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.BankDetails.BANK_DETAILS);
-       });
+        var em = em();
+        DatabaseUtil.executeQuery(em, connection -> {
+            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Person.PERSON);
+            DSL.using(connection).truncate(RequestProduct.REQUEST_PRODUCT);
+            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Request.REQUEST);
+            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Product.PRODUCT);
+            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Broker.BROKER);
+            return DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.BankDetails.BANK_DETAILS);
+        });
     }
 
     private static void initRequest(Fairy fairy, List<String> vermittlernummern) {
         var rand = new Random();
         final EntityManager e = em();
         e.getTransaction().begin();
+
+        final List<Product> products = getAllProducts(e);
         final List<Person> persons = e.createNamedQuery("persons", Person.class).getResultList();
-        for(int i = 0; i< fairy.baseProducer().randomBetween(10,10000); i++) {
+        for (int i = 0; i < fairy.baseProducer().randomBetween(10, 10000); i++) {
             Request a = new Request();
             a.setCreationDate(fairy.dateProducer().randomDateInThePast(1).toLocalDate());
-            var requestCandidates = List.of(fairy.baseProducer().numerify("SA###########"),fairy.baseProducer().numerify("KR###########"));
+            var requestCandidates = List.of(fairy.baseProducer().numerify("SA###########"), fairy.baseProducer().numerify("KR###########"));
             var requestNumber = requestCandidates.get(rand.nextInt(requestCandidates.size()));
-            a.setRequestNumber(requestNumber);;
+            var requestBranch = requestNumber.substring(0,2);
+            final List<Product> productList = products.stream().filter(p -> p.getBranch().equals(requestBranch)).collect(Collectors.toList());
+            Collections.shuffle(productList);
+            a.setProducts(productList.stream().limit(fairy.baseProducer().randomBetween(1,10)).collect(Collectors.toList()));
+            a.setRequestNumber(requestNumber);
             a.setPerson(fairy.baseProducer().randomElement(persons));
             a.setBrokerId(fairy.baseProducer().randomElement(vermittlernummern));
             e.persist(a);
         }
         e.getTransaction().commit();
         e.close();
+    }
+
+    private static List<Product> getAllProducts(EntityManager e) {
+        final CriteriaBuilder cb = e.getCriteriaBuilder();
+        final CriteriaQuery<Product> query = cb.createQuery(Product.class);
+        final Root<Product> root = query.from(Product.class);
+        final CriteriaQuery<Product> all = query.select(root);
+        return e.createQuery(all).getResultList();
     }
 
     private static Fairy getFairy() {
@@ -114,7 +147,7 @@ public abstract class AbstractTest {
         return new Person(person.getFirstName(), person.getLastName());
     }
 
-    private static Broker createBroker(com.devskiller.jfairy.producer.person.Person person, String vermittlerNummer){
+    private static Broker createBroker(com.devskiller.jfairy.producer.person.Person person, String vermittlerNummer) {
         return new Broker(person.getFirstName(), person.getLastName(), vermittlerNummer);
     }
 

@@ -7,4 +7,4 @@
  * in the user manual at https://docs.gradle.org/5.5-20190701220625+0000/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'jooqexample.de.inverso.jooqexample.model'
+rootProject.name = 'jooqexample.model'

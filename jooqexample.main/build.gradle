@@ -1,0 +1,134 @@
+plugins {
+    id 'java'
+    id "org.hibernate.gradle.tools" version "1.2.5"
+    id 'idea'
+    id 'nu.studer.jooq' version '3.0.3'
+}
+
+apply plugin: 'java'
+
+jooq {
+    version = '3.11.11'
+    edition = 'OSS'
+    /*
+    sample(sourceSets.main) {
+        jdbc {
+            driver = 'org.h2.Driver'
+            url = 'jdbc:h2:./test-gradle;AUTO_SERVER=TRUE'
+            user = 'sa'
+            password = ''
+        }
+        generator {
+            name = 'org.jooq.codegen.JavaGenerator'            
+            database {
+                name = 'org.jooq.meta.h2.H2Database'
+                //name = 'org.jooq.meta.jdbc.JDBCDatabase'
+                includes = '.*'
+                excludes = ''
+            }
+            target {
+                packageName = 'de.inverso.jooqexample.gen'
+            }
+        }
+    }
+     */
+
+    sample(sourceSets.main) {
+        generator {
+            name = 'org.jooq.codegen.JavaGenerator'
+            database {
+                name = 'org.jooq.meta.extensions.jpa.JPADatabase'
+                properties {
+                    property{
+                        key = 'packages'
+                        value = 'de.inverso.jooqexample.model'
+                    }
+                    property{
+                        key = 'use-attribute-converters'
+                        value = 'true'
+                    }
+                    includes = '.*'
+                    excludes = ''
+                }
+            }
+            target {
+                packageName = 'de.inverso.jooqexample.gen'
+            }
+        }
+    }
+
+}
+/*
+tasks.generateSampleJooqSchemaSource.with {
+    def out = new ByteArrayOutputStream()
+    javaExecSpec = { JavaExecSpec s ->
+        s.standardOutput = out
+        s.errorOutput = out
+        s.ignoreExitValue = true
+        s.jvmArgs '-Xmx512M'
+    }
+    execResultHandler = { ExecResult r ->
+        if (r.exitValue != 0) {
+            throw new RuntimeException('jOOQ source code generation failed:\n\n' + out.toString())
+        }
+    }
+}
+*/
+group 'de.inverso'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+String jooqVersion = "3.11.11"
+String  junitApiVersion = "5.4.2"
+String derbyVersion = "10.15.1.3"
+
+
+
+test {    
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    systemProperty 'junit.jupiter.conditions.deactivate', '*'
+    systemProperties = [
+            'junit.jupiter.extensions.autodetection.enabled': 'true',
+            'junit.jupiter.testinstance.lifecycle.default': 'per_class'
+    ]
+}
+
+dependencies {
+    compile project(':jooqexample.model')
+    compile group: 'com.devskiller', name: 'jfairy', version: '0.6.2'
+
+    compile group: 'org.jooq', name: 'jooq', version: "${jooqVersion}"
+    compile group: 'org.jooq', name: 'jooq-meta', version: "${jooqVersion}"
+    compile group: 'org.jooq', name: 'jooq-meta-extensions', version: "${jooqVersion}"
+    compile group: 'org.jooq', name: 'jooq-codegen', version: "${jooqVersion}"
+    compile group: 'org.jooq', name: 'jool', version: '0.9.14'
+
+
+
+    testCompile("org.junit.jupiter:junit-jupiter-api:$junitApiVersion")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitApiVersion",
+            "org.junit.vintage:junit-vintage-engine:$junitApiVersion"
+    )
+    testCompile group: 'org.junit.platform', name: 'junit-platform-suite-api', version: '1.4.2'
+    testCompile("junit:junit:4.12")
+
+    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.4.2'
+
+
+  //  compile group: 'org.apache.derby', name: 'derby', version: "$derbyVersion"
+    compile group: 'org.apache.derby', name: 'derbyclient', version: "$derbyVersion"
+    compile group: 'org.apache.derby', name: 'derbytools', version: "$derbyVersion"
+
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    runtime group: 'com.h2database', name: 'h2', version: '1.4.199'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqRuntime group: 'org.jooq', name: 'jooq-meta-extensions', version: "${jooqVersion}"
+    jooqRuntime("commons-logging:commons-logging:+")
+    jooqRuntime project(':jooqexample.model')
+    jooqRuntime group: 'org.hibernate', name: 'hibernate-core', version: '5.4.3.Final'
+}
+

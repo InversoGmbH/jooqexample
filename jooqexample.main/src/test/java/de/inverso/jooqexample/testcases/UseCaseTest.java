@@ -12,10 +12,10 @@ import javax.persistence.PersistenceException;
  * @author fabian
  * on 19.05.19.
  */
-public class InvalidSqlTest extends AbstractTest {
+public class UseCaseTest extends AbstractTest {
 
     @Test
-    public void executeSqLTest() {
+    public void invalidSqLTest() {
         Assertions.assertThrows(PersistenceException.class, () -> {
                     //language=H2
                     String sql = "select p.ID count(b.ID) anzahl" +

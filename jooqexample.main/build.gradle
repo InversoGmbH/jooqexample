@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id "org.hibernate.gradle.tools" version "1.2.5"
     id 'idea'
-    id 'nu.studer.jooq' version '3.0.3'
+    id 'nu.studer.jooq' version '3.0.3'    
 }
 
 apply plugin: 'java'
@@ -58,22 +58,7 @@ jooq {
     }
 
 }
-/*
-tasks.generateSampleJooqSchemaSource.with {
-    def out = new ByteArrayOutputStream()
-    javaExecSpec = { JavaExecSpec s ->
-        s.standardOutput = out
-        s.errorOutput = out
-        s.ignoreExitValue = true
-        s.jvmArgs '-Xmx512M'
-    }
-    execResultHandler = { ExecResult r ->
-        if (r.exitValue != 0) {
-            throw new RuntimeException('jOOQ source code generation failed:\n\n' + out.toString())
-        }
-    }
-}
-*/
+
 group 'de.inverso'
 version '1.0-SNAPSHOT'
 
@@ -127,6 +112,7 @@ dependencies {
   //  compile group: 'org.apache.derby', name: 'derby', version: "$derbyVersion"
     compile group: 'org.apache.derby', name: 'derbyclient', version: "$derbyVersion"
     compile group: 'org.apache.derby', name: 'derbytools', version: "$derbyVersion"
+    
 
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     runtime group: 'com.h2database', name: 'h2', version: '1.4.199'
@@ -134,6 +120,5 @@ dependencies {
     jooqRuntime group: 'org.jooq', name: 'jooq-meta-extensions', version: "${jooqVersion}"
     jooqRuntime("commons-logging:commons-logging:+")
     jooqRuntime project(':jooqexample.model')
-    jooqRuntime group: 'org.hibernate', name: 'hibernate-core', version: '5.4.3.Final'
 }
 

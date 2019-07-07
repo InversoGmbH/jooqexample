@@ -11,3 +11,24 @@ plugins {
     id 'java-library'
 }
 
+dependencies {
+    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.3.Final'
+}
+
+compileJava {
+    String relativePath = "build/generated/src/main/java"
+    sourceSets.main.java { srcDir relativePath }
+    File generatedSourceDir = project.file("build/generated/src/main/java")
+    println "Creating and configuring generated source directory $generatedSourceDir"
+    project.mkdir(generatedSourceDir)
+    options.annotationProcessorGeneratedSourcesDirectory = generatedSourceDir
+    outputs.dir(generatedSourceDir)
+
+    doFirst {
+        // force a clean of generatedSourceDir to prevent java.lang.IllegalStateException: endPosTable already set. This shouldn't be need if using Gradle 4.8+ or Java 9+.
+        project.delete(generatedSourceDir)
+        project.mkdir(generatedSourceDir)
+    }
+}
+
+

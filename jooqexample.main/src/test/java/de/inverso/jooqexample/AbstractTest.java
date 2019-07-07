@@ -64,9 +64,7 @@ public abstract class AbstractTest {
         initRequest(fairy, brokerIds);
         final EntityManager e = em();
         e.getTransaction().begin();
-        brokerIds.stream().map(brokerId -> {
-            return createBroker(fairy.person(), brokerId);
-        }).forEach(e::persist);
+        brokerIds.stream().map(brokerId -> createBroker(fairy.person(), brokerId)).forEach(e::persist);
         final Broker broker = createBroker(fairy.person(), fairy.baseProducer().numerify("#############"));
         broker.setFirstName("Thomas");
         e.persist(broker);
@@ -86,13 +84,16 @@ public abstract class AbstractTest {
     }
 
     private static void initRequest(Fairy fairy, List<String> vermittlernummern) {
+        var rand = new Random();
         final EntityManager e = em();
         e.getTransaction().begin();
         final List<Person> persons = e.createNamedQuery("persons", Person.class).getResultList();
         for(int i = 0; i< fairy.baseProducer().randomBetween(10,10000); i++) {
             Request a = new Request();
             a.setCreationDate(fairy.dateProducer().randomDateInThePast(1).toLocalDate());
-            a.setRequestNumber(fairy.baseProducer().numerify("SA###########"));;
+            var requestCandidates = List.of(fairy.baseProducer().numerify("SA###########"),fairy.baseProducer().numerify("KR###########"));
+            var requestNumber = requestCandidates.get(rand.nextInt(requestCandidates.size()));
+            a.setRequestNumber(requestNumber);;
             a.setPerson(fairy.baseProducer().randomElement(persons));
             a.setBrokerId(fairy.baseProducer().randomElement(vermittlernummern));
             e.persist(a);

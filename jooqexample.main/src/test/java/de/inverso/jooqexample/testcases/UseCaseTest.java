@@ -1,12 +1,18 @@
 package de.inverso.jooqexample.testcases;
 
 import de.inverso.jooqexample.AbstractTest;
-import org.hibernate.exception.SQLGrammarException;
+import de.inverso.jooqexample.model.*;
+
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.logging.Logger;
 
 /**
  * @author fabian
@@ -28,6 +34,27 @@ public class UseCaseTest extends AbstractTest {
                     entityManager.createNativeQuery(sql).getResultList();
                 }
         );
+    }
+
+    @Test
+    public void countBadWithCriteriaTest() {
+        EntityManager entityManager = em();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Request> query = cb.createQuery(Request.class);
+        final Root<Request> root = query.from(Request.class);
+        query.where(cb.like(root.get(Request_.REQUEST_NUMBER),"KR%"));
+        Logger.getAnonymousLogger().info("" + entityManager.createQuery(query).getResultList().size());
+    }
+
+    @Test
+    public void countWithCriteriaTest() {
+        EntityManager entityManager = em();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        final Root<Request> root = query.from(Request.class);
+        query.select(cb.count(root));
+        query.where(cb.like(root.get(Request_.REQUEST_NUMBER),"KR%"));
+        Logger.getAnonymousLogger().info(entityManager.createQuery(query).getSingleResult().toString());
     }
 
 }

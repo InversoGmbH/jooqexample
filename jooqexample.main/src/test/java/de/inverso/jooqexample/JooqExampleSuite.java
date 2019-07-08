@@ -14,8 +14,8 @@ import org.junit.runner.RunWith;
  */
 @RunWith(JUnitPlatform.class)
 @SelectClasses({
-        UseCaseTest.class,
         InitialTest.class,
+        UseCaseTest.class,
         BasicSelectionTest.class,
         GeneratedClassesTest.class
 })

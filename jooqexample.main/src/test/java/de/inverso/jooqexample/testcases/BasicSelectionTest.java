@@ -51,7 +51,7 @@ public class BasicSelectionTest extends AbstractTest {
         }
         final List<BankStatisticsDTO> resultList = nativeQuery.unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(BankStatisticsDTO.class)).getResultList();
         Assertions.assertNotEquals(resultList.size(), 0);
-        entityManager.flush();
+        entityManager.getTransaction().commit();
         entityManager.close();
     }
 
@@ -77,7 +77,7 @@ public class BasicSelectionTest extends AbstractTest {
                 BankStatisticsDTO.class
         );
         Assertions.assertNotEquals(statisticsDTOS.size(), 0);
-        entityManager.flush();
+        entityManager.getTransaction().commit();
         entityManager.close();
     }
 

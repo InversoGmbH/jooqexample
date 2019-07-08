@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -22,6 +23,18 @@ import java.util.stream.Collectors;
  * on 17.05.19.
  */
 public abstract class AbstractTest {
+
+    public static final Integer PERSON_AMOUNT = 1000;
+
+    private static Boolean initialized = false;
+
+    public static synchronized Boolean isInitialized() {
+        if(!initialized) {
+            initialized = true;
+            return false;
+        }
+        return initialized;
+    }
 
     protected static EntityManager em() {
         return DatabaseUtil.getEntityManager();
@@ -34,7 +47,7 @@ public abstract class AbstractTest {
         Fairy fairy = getFairy();
 
         transaction.begin();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < PERSON_AMOUNT; i++) {
             final int random = rn.nextInt(randomMax - randomMin + 1);
             Person p = createPerson(fairy.person());
             List<BankDetails> bankDetails = new ArrayList<>();
@@ -66,6 +79,10 @@ public abstract class AbstractTest {
 
     @BeforeAll
     static void setup() {
+        if(isInitialized()){
+            return;
+        }
+        Logger.getAnonymousLogger().info("Setup Tests");
         Random rn = new Random();
         int randomMin = 1;
         int randomMax = 10;
@@ -91,6 +108,7 @@ public abstract class AbstractTest {
 
     @AfterAll
     static void tearDown() {
+        Logger.getAnonymousLogger().info("Tear Down Tests");
         var em = em();
         DatabaseUtil.executeQuery(em, connection -> {
             DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Person.PERSON);

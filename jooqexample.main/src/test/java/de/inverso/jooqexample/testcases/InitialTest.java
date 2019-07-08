@@ -25,7 +25,7 @@ public class InitialTest extends AbstractTest {
         List<Person> persons = entityManager.createNamedQuery("persons", Person.class).getResultList();
         Logger.getAnonymousLogger().info(persons.toString());
 
-        Assertions.assertEquals(1000, persons.size());
+        Assertions.assertEquals(PERSON_AMOUNT, persons.size());
 
         entityManager.flush();
         entityManager.close();

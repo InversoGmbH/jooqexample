@@ -9,10 +9,7 @@ import org.jooq.Result;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -57,7 +54,11 @@ public final class DatabaseUtil {
     }
 
     public static <E> E executeQuery(final EntityManager entityManager, final ReturningWork<E> worker) {
-        return entityManager.unwrap(Session.class).doReturningWork(worker);
+        final EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        final E result = entityManager.unwrap(Session.class).doReturningWork(worker);
+        transaction.commit();
+        return result;
     }
 
     private DatabaseUtil() {

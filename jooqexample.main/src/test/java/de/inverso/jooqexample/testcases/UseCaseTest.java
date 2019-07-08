@@ -16,6 +16,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +51,11 @@ public class UseCaseTest extends AbstractTest {
     public void productsPerRequestJpaTest() {
         EntityManager entityManager = em();
         List<Request> requests = entityManager.createNamedQuery("requestWithProducts", Request.class).getResultList();
-        final Map<Long, String> requestProduct = new HashMap<>();
-        requests.stream().forEach(request ->
-                requestProduct.put(request.getId(),
-                        request.getProducts().stream().map(Product::getName).collect(Collectors.toList()).toString())
-        );
+        final Map<Long, String> requestProduct = requests.stream() //
+                .collect(Collectors.toMap(Request::getId, request -> request.getProducts().stream() //
+                        .sorted(Comparator.comparing(Product::getId)) //
+                        .map(Product::getName).collect(Collectors.toList()) //
+                        .toString(), (a, b) -> b));
         Logger.getAnonymousLogger().info(requestProduct.toString());
     }
 

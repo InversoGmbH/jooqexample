@@ -106,7 +106,7 @@ public abstract class AbstractTest {
         e.close();
     }
 
-    private static void initRequest(Fairy fairy, List<String> vermittlernummern) {
+    private static void initRequest(Fairy fairy, List<String> brokerIds) {
         var rand = new Random();
         final EntityManager e = em();
         e.getTransaction().begin();
@@ -124,7 +124,7 @@ public abstract class AbstractTest {
             a.setProducts(productList.stream().limit(fairy.baseProducer().randomBetween(1,10)).collect(Collectors.toList()));
             a.setRequestNumber(requestNumber);
             a.setPerson(fairy.baseProducer().randomElement(persons));
-            a.setBrokerId(fairy.baseProducer().randomElement(vermittlernummern));
+            a.setBrokerId(fairy.baseProducer().randomElement(brokerIds));
             e.persist(a);
         }
         e.getTransaction().commit();

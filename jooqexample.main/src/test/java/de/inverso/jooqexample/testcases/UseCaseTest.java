@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static org.jooq.impl.DSL.*;
+
 /**
  * @author fabian
  * on 19.05.19.
@@ -63,8 +65,8 @@ public class UseCaseTest extends AbstractTest {
             var r = de.inverso.jooqexample.gen.tables.Request.REQUEST.as("r");
             var rp = RequestProduct.REQUEST_PRODUCT.as("rp");
             var p = de.inverso.jooqexample.gen.tables.Product.PRODUCT.as("p");
-            return DSL.using(connection, SQLDialect.H2)
-                    .select(r.ID, DSL.listAgg(p.NAME, ",").withinGroupOrderBy(p.ID).as("Products")) //
+            return using(connection, SQLDialect.H2)
+                    .select(r.ID, listAgg(p.NAME, ",").withinGroupOrderBy(p.ID).as("Products")) //
                     .from(r //
                             .join(rp).on(r.ID.eq(rp.REQUEST_ID)) //
                             .join(p).on(p.ID.eq(rp.PRODUCTS_ID)) //

@@ -62,11 +62,7 @@ jooq {
 group 'de.inverso'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
 
-String jooqVersion = "3.11.11"
-String junitApiVersion = "5.4.2"
-String derbyVersion = "10.15.1.3"
 
 
 test {    

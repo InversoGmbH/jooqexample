@@ -57,7 +57,7 @@ public abstract class AbstractTest {
         final EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         for (int i = 0; i < fairy.baseProducer().randomBetween(randomMin, randomMax); i++) {
-            String productName = fairy.textProducer().latinWord(10);
+            String productName = fairy.textProducer().latinWord(1);
             Product product = new Product(productName, branches.get(rn.nextInt(branches.size())));
             entityManager.persist(product);
         }

@@ -6,8 +6,6 @@ import de.inverso.jooqexample.gen.tables.RequestProduct;
 import de.inverso.jooqexample.model.Product;
 import de.inverso.jooqexample.model.Request;
 import de.inverso.jooqexample.model.Request_;
-import org.jooq.Record2;
-import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Assertions;

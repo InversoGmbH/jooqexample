@@ -16,8 +16,15 @@ E.g. you want to know who has the most bank details. In this case you produce a 
 You may notice multiple syntax errors in this statement. If not you will notice it when you run the application. And thats the main weakness of this approach. 
 Jooq allows to write SQL querys with the benefit of syntax checking with the java compiler.
 
-### I allready have JPA, so why should I use it?
+### I already have JPA, so why should I use it?
 If you just write a CRUD application it just depends your favorite way to access your database.
 But there exist some usecases in which native querys are more efficient.  
 
- 
+For example:  Assume we want to get all Products per Request as concatinated String. JPQL does not provide an operation for this.
+A JPA example is provided in `de.inverso.jooqexample.testcases.UseCaseTest.productsPerRequestJpaTest`.
+The application will now fetch all Requests and their products. But we only need the id and the productnames as concated string.
+Every other fetched data is useless.
+
+Databases provide functions like `listagg` to achieve the same.
+The testcase `de.inverso.jooqexample.testcases.UseCaseTest.productsPerRequestJooqTest` shows the same result. 
+This will fetch the information we need direct from the database. 

@@ -106,20 +106,6 @@ public abstract class AbstractTest {
         e.close();
     }
 
-    @AfterAll
-    static void tearDown() {
-        Logger.getAnonymousLogger().info("Tear Down Tests");
-        var em = em();
-        DatabaseUtil.executeQuery(em, connection -> {
-            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Person.PERSON);
-            DSL.using(connection).truncate(RequestProduct.REQUEST_PRODUCT);
-            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Request.REQUEST);
-            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Product.PRODUCT);
-            DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.Broker.BROKER);
-            return DSL.using(connection).truncate(de.inverso.jooqexample.gen.tables.BankDetails.BANK_DETAILS);
-        });
-    }
-
     private static void initRequest(Fairy fairy, List<String> vermittlernummern) {
         var rand = new Random();
         final EntityManager e = em();

@@ -55,8 +55,9 @@ public class UseCaseTest extends AbstractTest {
                 .collect(Collectors.toMap(Request::getId, request -> request.getProducts().stream() //
                         .sorted(Comparator.comparing(Product::getId)) //
                         .map(Product::getName).collect(Collectors.toList()) //
-                        .toString(), (a, b) -> b));
+                        .toString(), (a, b) -> b + "\n"));
         Logger.getAnonymousLogger().info(requestProduct.toString());
+        entityManager.close();
     }
 
     @Test
@@ -74,6 +75,7 @@ public class UseCaseTest extends AbstractTest {
                     ).groupBy(r.ID).fetch();
         });
         Logger.getAnonymousLogger().info(result.toString());
+        entityManager.close();
     }
 
     @Test
@@ -84,6 +86,7 @@ public class UseCaseTest extends AbstractTest {
         final Root<Request> root = query.from(Request.class);
         query.where(cb.like(root.get(Request_.REQUEST_NUMBER), "KR%"));
         Logger.getAnonymousLogger().info("" + entityManager.createQuery(query).getResultList().size());
+        entityManager.close();
     }
 
     @Test
@@ -95,6 +98,7 @@ public class UseCaseTest extends AbstractTest {
         query.select(cb.count(root));
         query.where(cb.like(root.get(Request_.REQUEST_NUMBER), "KR%"));
         Logger.getAnonymousLogger().info(entityManager.createQuery(query).getSingleResult().toString());
+        entityManager.close();
     }
 
 }

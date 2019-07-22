@@ -75,6 +75,7 @@ public abstract class AbstractTest {
             entityManager.persist(product);
         }
         transaction.commit();
+        entityManager.close();
     }
 
     @BeforeAll

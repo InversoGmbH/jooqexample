@@ -38,6 +38,7 @@ jooq {
             name = 'org.jooq.codegen.JavaGenerator'
             database {
                 name = 'org.jooq.meta.extensions.jpa.JPADatabase'
+                outputSchemaToDefault = true
                 properties {
                     property{
                         key = 'packages'
@@ -53,6 +54,7 @@ jooq {
             }
             target {
                 packageName = 'de.inverso.jooqexample.gen'
+                
             }
         }
     }

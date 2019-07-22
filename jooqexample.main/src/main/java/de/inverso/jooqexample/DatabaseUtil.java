@@ -1,17 +1,10 @@
 package de.inverso.jooqexample;
 
-import de.inverso.jooqexample.dto.BankStatisticsDTO;
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
 import org.hibernate.transform.Transformers;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SelectQuery;
-import org.jooq.impl.DSL;
 
 import javax.persistence.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -30,7 +23,7 @@ public final class DatabaseUtil {
         return factory.createEntityManager();
     }
 
-    public static <E> List<E> nativeQueryWithEntity(EntityManager em, org.jooq.Query query, Class<E> type) {
+    public static <E> List nativeQueryWithEntity(EntityManager em, org.jooq.Query query, Class<E> type) {
         // There's an unsafe cast here, but we can be sure that we'll get the right type from JPA
         Query result = em.createNativeQuery(query.getSQL(), type);
 

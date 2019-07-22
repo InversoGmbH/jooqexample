@@ -64,4 +64,14 @@ public class Broker {
     public void setBrokerId(String brokerId) {
         this.brokerId = brokerId;
     }
+
+    @Override
+    public String toString() {
+        return "Broker{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", brokerId='" + brokerId + '\'' +
+                '}';
+    }
 }

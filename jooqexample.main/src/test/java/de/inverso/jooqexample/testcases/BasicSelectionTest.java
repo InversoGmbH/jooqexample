@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 public class BasicSelectionTest extends AbstractTest {
 
     @Test
-    @Tag("fast")
     public void selectDataTest() {
 
         var pid = field("p.id", Long.class);
@@ -31,13 +30,13 @@ public class BasicSelectionTest extends AbstractTest {
         var bPersonId = field("b.person_id", Long.class);
         var anzahl = count(bid).as("anzahl");
         var personTable = table("PERSON p");
-        var bankverbindungTable = table("BANK_DETAILS b");
+        var bankDetailsTable = table("BANK_DETAILS b");
 
         EntityManager entityManager = em();
         entityManager.getTransaction().begin();
         final var query = select(pid.as("id"), anzahl).//
                 from(personTable).//
-                join(bankverbindungTable) //
+                join(bankDetailsTable) //
                 .on(pid.eq(bPersonId)) //
                 .groupBy(pid) //
                 .having(anzahl.gt(1)).getQuery();
@@ -56,7 +55,6 @@ public class BasicSelectionTest extends AbstractTest {
     }
 
     @Test
-    @Tag("fast")
     public void selectWithUtilityTest() {
         var pid = field("p.id", Long.class);
         var bid = field("b.ID");

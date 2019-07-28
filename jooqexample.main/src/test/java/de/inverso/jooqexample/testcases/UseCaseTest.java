@@ -33,14 +33,16 @@ public class UseCaseTest extends AbstractTest {
 
     @Test
     public void invalidSqLTest() {
+        String p = "bob";
         Assertions.assertThrows(PersistenceException.class, () -> {
                     //language=H2
                     String sql = "select p.ID count(b.ID) anzahl" +
                             "from PERSON p" +
-                            "join BANKDETAILS B on p.ID = B.PERSON_ID\n" +
-                            "group by p.ID\n" +
-                            "having anzahl>1\n" +
-                            "order by anzahl desc\n";
+                            "join BANKDETAILS B on p.ID = B.PERSON_ID " +
+                            "where p.firstName = '" + p + "' "+
+                            "group by p.ID " +
+                            "having anzahl>1 " +
+                            "order by anzahl desc";
                     EntityManager entityManager = em();
                     entityManager.createNativeQuery(sql).getResultList();
                 }

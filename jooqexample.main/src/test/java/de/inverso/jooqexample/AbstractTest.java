@@ -2,10 +2,7 @@ package de.inverso.jooqexample;
 
 import com.devskiller.jfairy.Fairy;
 import com.devskiller.jfairy.producer.payment.IBAN;
-import de.inverso.jooqexample.gen.tables.RequestProduct;
 import de.inverso.jooqexample.model.*;
-import org.jooq.impl.DSL;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import javax.persistence.EntityManager;

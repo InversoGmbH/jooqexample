@@ -9,9 +9,9 @@ import de.inverso.jooqexample.gen.tables.Request;
 import de.inverso.jooqexample.gen.tables.records.BrokerRecord;
 import org.jooq.*;
 import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -19,7 +19,6 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import static de.inverso.jooqexample.gen.tables.Broker.*;
 import static org.jooq.impl.DSL.*;
@@ -32,6 +31,8 @@ import static org.jooq.impl.DSL.*;
 
 public class GeneratedClassesTest extends AbstractTest {
 
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(GeneratedClassesTest.class);
+
     @Test
     public void selectBrokerTest() {
         EntityManager entityManager = em();
@@ -42,48 +43,47 @@ public class GeneratedClassesTest extends AbstractTest {
                         .where(BROKER.FIRSTNAME.eq("Thomas")) //
                         .fetchInto(BrokerRecord.class));
 
-        Logger.getAnonymousLogger().info("\n" + result.toString());
+        LOGGER.info("\n" + result.toString());
         Assertions.assertNotEquals(result.size(), 0);
         entityManager.close();
     }
 
     @Test
     public void selectWithJoinTest() {
-        Broker v = BROKER.as("v");
+        Broker b = BROKER.as("b");
         Request a = Request.REQUEST.as("a");
 
         EntityManager entityManager = em();
         final var result = DatabaseUtil.executeQuery(entityManager, connection ->
                 using(connection). //
-                        select(v.BROKERID, count(a.ID).as("anzahl")). //
-                        from(v). //
-                        join(a).on(a.BROKERID.eq(v.BROKERID)). //
+                        select(b.BROKERID, count(a.ID).as("anzahl")). //
+                        from(b). //
+                        join(a).on(a.BROKERID.eq(b.BROKERID)). //
                         where(a.CREATIONDATE.ge( dateAdd( currentDate(), -1, DatePart.MONTH ))). //
-                        groupBy(v.BROKERID). //
+                        groupBy(b.BROKERID). //
                         orderBy(count(a.ID).desc()). //
                         fetch()
         );
-        Logger.getAnonymousLogger().info("\n" + result.toString());
+        LOGGER.info("\n" + result.toString());
         entityManager.close();
     }
 
     @Test
     public void selectWithJoinDTOTest() {
-        Broker v = BROKER.as("v");
+        Broker b = BROKER.as("b");
         Request a = Request.REQUEST.as("a");
-        Date.from(LocalDate.now().minusMonths(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         EntityManager entityManager = em();
         final var result = DatabaseUtil.executeQuery(entityManager, connection ->
                 using(connection). //
-                        select(v.BROKERID.as("vermittlernummer"), count(a.ID).as("anzahl")). //
-                        from(v). //
-                        join(a).on(a.BROKERID.eq(v.BROKERID)). //
+                        select(b.BROKERID.as("vermittlernummer"), count(a.ID).as("anzahl")). //
+                        from(b). //
+                        join(a).on(a.BROKERID.eq(b.BROKERID)). //
                         where(a.CREATIONDATE.ge( dateAdd( currentDate(), -1, DatePart.MONTH ))). //
-                        groupBy(v.BROKERID). //
+                        groupBy(b.BROKERID). //
                         orderBy(count(a.ID).desc()). //
                         fetchInto(BrokerStatistic.class)
         );
-        Logger.getAnonymousLogger().info("\n" + result.toString());
+        LOGGER.info("\n" + result.toString());
         entityManager.close();
     }
 
@@ -110,7 +110,7 @@ public class GeneratedClassesTest extends AbstractTest {
                 ));
 
        var result = DatabaseUtil.nativeQueryWithEntity(entityManager,query, de.inverso.jooqexample.model.Broker.class);
-        Logger.getAnonymousLogger().info("\n" + result.toString());
+        LOGGER.info("\n" + result.toString());
         entityManager.close();
     }
 

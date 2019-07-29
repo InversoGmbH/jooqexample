@@ -3,6 +3,7 @@ package de.inverso.jooqexample.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author fabian
@@ -30,7 +31,7 @@ public class Request {
     private LocalDate creationDate;
 
     @ManyToMany
-    private List<Product> products;
+    private Set<Product> products;
 
     public Long getId() {
         return id;
@@ -72,11 +73,11 @@ public class Request {
         this.creationDate = creationDate;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 

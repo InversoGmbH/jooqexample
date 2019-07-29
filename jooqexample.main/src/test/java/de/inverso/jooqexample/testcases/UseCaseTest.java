@@ -8,8 +8,9 @@ import de.inverso.jooqexample.model.Request;
 import de.inverso.jooqexample.model.Request_;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -17,10 +18,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
 import java.util.stream.Collectors;
 
 import static org.jooq.impl.DSL.*;
@@ -29,9 +29,13 @@ import static org.jooq.impl.DSL.*;
  * @author fabian
  * on 19.05.19.
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UseCaseTest extends AbstractTest {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(UseCaseTest.class);
+
     @Test
+    @Order(1)
     public void invalidSqLTest() {
         String p = "bob";
         Assertions.assertThrows(PersistenceException.class, () -> {
@@ -39,7 +43,7 @@ public class UseCaseTest extends AbstractTest {
                     String sql = "select p.ID count(b.ID) anzahl" +
                             "from PERSON p" +
                             "join BANKDETAILS B on p.ID = B.PERSON_ID " +
-                            "where p.firstName = '" + p + "' "+
+                            "where p.firstName = '" + p + "' " +
                             "group by p.ID " +
                             "having anzahl>1 " +
                             "order by anzahl desc";
@@ -50,6 +54,7 @@ public class UseCaseTest extends AbstractTest {
     }
 
     @Test
+    @Order(2)
     public void productsPerRequestJpaTest() {
         EntityManager entityManager = em();
         List<Request> requests = entityManager.createNamedQuery("requestWithProducts", Request.class).getResultList();
@@ -58,11 +63,12 @@ public class UseCaseTest extends AbstractTest {
                         .sorted(Comparator.comparing(Product::getId)) //
                         .map(Product::getName).collect(Collectors.toList()) //
                         .toString(), (a, b) -> b + "\n"));
-        Logger.getAnonymousLogger().info(requestProduct.toString());
+        LOGGER.info(requestProduct.toString());
         entityManager.close();
     }
 
     @Test
+    @Order(3)
     public void productsPerRequestJooqTest() {
         EntityManager entityManager = em();
         final var result = DatabaseUtil.executeQuery(entityManager, connection -> {
@@ -76,22 +82,24 @@ public class UseCaseTest extends AbstractTest {
                             .join(p).on(p.ID.eq(rp.PRODUCTS_ID)) //
                     ).groupBy(r.ID).fetch();
         });
-        Logger.getAnonymousLogger().info(result.toString());
+        LOGGER.info(result.toString());
         entityManager.close();
     }
 
     @Test
+    @Order(4)
     public void countBadWithCriteriaTest() {
         EntityManager entityManager = em();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         final CriteriaQuery<Request> query = cb.createQuery(Request.class);
         final Root<Request> root = query.from(Request.class);
         query.where(cb.like(root.get(Request_.REQUEST_NUMBER), "KR%"));
-        Logger.getAnonymousLogger().info("" + entityManager.createQuery(query).getResultList().size());
+        LOGGER.info("" + entityManager.createQuery(query).getResultList().size());
         entityManager.close();
     }
 
     @Test
+    @Order(5)
     public void countWithCriteriaTest() {
         EntityManager entityManager = em();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -99,7 +107,7 @@ public class UseCaseTest extends AbstractTest {
         final Root<Request> root = query.from(Request.class);
         query.select(cb.count(root));
         query.where(cb.like(root.get(Request_.REQUEST_NUMBER), "KR%"));
-        Logger.getAnonymousLogger().info(entityManager.createQuery(query).getSingleResult().toString());
+        LOGGER.info(entityManager.createQuery(query).getSingleResult().toString());
         entityManager.close();
     }
 

@@ -4,6 +4,8 @@ import com.devskiller.jfairy.Fairy;
 import com.devskiller.jfairy.producer.payment.IBAN;
 import de.inverso.jooqexample.model.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -11,7 +13,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
  * on 17.05.19.
  */
 public abstract class AbstractTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
 
     public static final Integer PERSON_AMOUNT = 1000;
 
@@ -80,7 +83,7 @@ public abstract class AbstractTest {
         if(isInitialized()){
             return;
         }
-        Logger.getAnonymousLogger().info("Setup Tests");
+        LOGGER.info("Setup Tests");
         Random rn = new Random();
         int randomMin = 1;
         int randomMax = 10;
@@ -119,7 +122,7 @@ public abstract class AbstractTest {
             var requestBranch = requestNumber.substring(0,2);
             final List<Product> productList = products.stream().filter(p -> p.getBranch().equals(requestBranch)).collect(Collectors.toList());
             Collections.shuffle(productList);
-            a.setProducts(productList.stream().limit(fairy.baseProducer().randomBetween(1,10)).collect(Collectors.toList()));
+            a.setProducts(productList.stream().limit(fairy.baseProducer().randomBetween(1,10)).collect(Collectors.toSet()));
             a.setRequestNumber(requestNumber);
             a.setPerson(fairy.baseProducer().randomElement(persons));
             a.setBrokerId(fairy.baseProducer().randomElement(brokerIds));

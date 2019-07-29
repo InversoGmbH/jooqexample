@@ -7,13 +7,14 @@ import de.inverso.jooqexample.DatabaseUtil;
 import de.inverso.jooqexample.dto.BankStatisticsDTO;
 import org.hibernate.transform.Transformers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
+
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 /**
  * @author fabian
@@ -21,6 +22,8 @@ import java.util.logging.Logger;
  */
 
 public class BasicSelectionTest extends AbstractTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicSelectionTest.class);
 
     @Test
     public void selectDataTest() {
@@ -40,8 +43,8 @@ public class BasicSelectionTest extends AbstractTest {
                 .on(pid.eq(bPersonId)) //
                 .groupBy(pid) //
                 .having(anzahl.gt(1)).getQuery();
-        final Logger logger = Logger.getAnonymousLogger();
-        logger.info(query.getSQL());
+
+        LOGGER.info(query.getSQL());
         final Query nativeQuery = entityManager.createNativeQuery(query.getSQL());
 
         List<Object> values = query.getBindValues();

@@ -95,6 +95,10 @@ dependencies {
     compile group: 'org.jooq', name: 'jooq-codegen', version: "${jooqVersion}"
     compile group: 'org.jooq', name: 'jool', version: '0.9.14'
 
+    compile("org.apache.logging.log4j:log4j-api:+")
+    compile("org.apache.logging.log4j:log4j-slf4j-impl:+")
+    compile("org.apache.logging.log4j:log4j-core:+")
+
 
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitApiVersion")
@@ -116,7 +120,9 @@ dependencies {
     runtime group: 'com.h2database', name: 'h2', version: '1.4.199'
     jooqRuntime 'com.h2database:h2:1.4.193'
     jooqRuntime group: 'org.jooq', name: 'jooq-meta-extensions', version: "${jooqVersion}"
-    jooqRuntime("commons-logging:commons-logging:+")
+    jooqRuntime("org.apache.logging.log4j:log4j-api:+")
+    jooqRuntime("org.apache.logging.log4j:log4j-slf4j-impl:+")
+    jooqRuntime("org.apache.logging.log4j:log4j-core:+")
     jooqRuntime project(':jooqexample.model')
 }
 

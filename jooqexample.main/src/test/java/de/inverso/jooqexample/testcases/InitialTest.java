@@ -5,11 +5,13 @@ import de.inverso.jooqexample.AbstractTest;
 import de.inverso.jooqexample.model.Person;
 
 import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import javax.persistence.EntityManager;
 import java.util.*;
-import java.util.logging.Logger;
+
 
 /**
  * @author fabian
@@ -17,13 +19,14 @@ import java.util.logging.Logger;
  */
 public class InitialTest extends AbstractTest {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(InitialTest.class);
+
     @Test
-    @Tag("fast")
     public void connectionTest() {
         final EntityManager entityManager = em();
         entityManager.getTransaction().begin();
         List<Person> persons = entityManager.createNamedQuery("persons", Person.class).getResultList();
-        Logger.getAnonymousLogger().info(persons.toString());
+        LOGGER.info(persons.toString());
 
         Assertions.assertEquals(PERSON_AMOUNT, persons.size());
 
@@ -32,12 +35,11 @@ public class InitialTest extends AbstractTest {
     }
 
     @Test
-    @Tag("fast")
     public void bankDetailsTest() {
         final EntityManager entityManager = em();
         entityManager.getTransaction().begin();
         Person person = entityManager.createNamedQuery("persons", Person.class).getResultList().stream().findFirst().get();
-        Logger.getAnonymousLogger().info(person.getBankDetails().toString());
+        LOGGER.info(person.getBankDetails().toString());
         entityManager.getTransaction().commit();
         entityManager.close();
     }

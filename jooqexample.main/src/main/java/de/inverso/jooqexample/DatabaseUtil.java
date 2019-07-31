@@ -47,11 +47,7 @@ public final class DatabaseUtil {
     }
 
     public static <E> E executeQuery(final EntityManager entityManager, final ReturningWork<E> worker) {
-        final EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        final E result = entityManager.unwrap(Session.class).doReturningWork(worker);
-        transaction.commit();
-        return result;
+        return entityManager.unwrap(Session.class).doReturningWork(worker);
     }
 
     private DatabaseUtil() {

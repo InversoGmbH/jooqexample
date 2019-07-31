@@ -51,7 +51,8 @@ public class BasicSelectionTest extends AbstractTest {
         for (int i = 0; i < values.size(); i++) {
             nativeQuery.setParameter(i + 1, values.get(i));
         }
-        final List<BankStatisticsDTO> resultList = nativeQuery.unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(BankStatisticsDTO.class)).getResultList();
+        @SuppressWarnings({ "deprecation", "unchecked" })
+		final List<BankStatisticsDTO> resultList = nativeQuery.unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(BankStatisticsDTO.class)).getResultList();
         Assertions.assertNotEquals(resultList.size(), 0);
         entityManager.getTransaction().commit();
         entityManager.close();

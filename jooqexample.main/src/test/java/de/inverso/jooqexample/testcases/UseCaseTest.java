@@ -1,29 +1,34 @@
 package de.inverso.jooqexample.testcases;
 
-import de.inverso.jooqexample.AbstractTest;
-import de.inverso.jooqexample.DatabaseUtil;
-import de.inverso.jooqexample.gen.tables.RequestProduct;
-import de.inverso.jooqexample.model.Product;
-import de.inverso.jooqexample.model.Request;
-import de.inverso.jooqexample.model.Request_;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
-import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.jooq.impl.DSL.*;
+
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 
-import java.util.stream.Collectors;
+import org.jooq.SQLDialect;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static org.jooq.impl.DSL.*;
+import de.inverso.jooqexample.AbstractTest;
+import de.inverso.jooqexample.DatabaseUtil;
+import de.inverso.jooqexample.gen.tables.RequestProduct;
+import de.inverso.jooqexample.model.Product;
+import de.inverso.jooqexample.model.Request;
+import de.inverso.jooqexample.model.Request_;
 
 /**
  * @author fabian

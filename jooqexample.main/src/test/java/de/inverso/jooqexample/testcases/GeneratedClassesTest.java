@@ -1,27 +1,26 @@
 package de.inverso.jooqexample.testcases;
 
-import de.inverso.jooqexample.AbstractTest;
-import de.inverso.jooqexample.DatabaseUtil;
-import de.inverso.jooqexample.dto.BrokerStatistic;
+import static de.inverso.jooqexample.gen.tables.Broker.BROKER;
+import static org.jooq.impl.DSL.*;
 
-import de.inverso.jooqexample.gen.tables.Broker;
-import de.inverso.jooqexample.gen.tables.Request;
-import de.inverso.jooqexample.gen.tables.records.BrokerRecord;
-import org.jooq.*;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import org.jooq.DatePart;
+import org.jooq.Query;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-
-import java.util.List;
-
-import static de.inverso.jooqexample.gen.tables.Broker.*;
-import static org.jooq.impl.DSL.*;
+import de.inverso.jooqexample.AbstractTest;
+import de.inverso.jooqexample.DatabaseUtil;
+import de.inverso.jooqexample.dto.BrokerStatistic;
+import de.inverso.jooqexample.gen.tables.Broker;
+import de.inverso.jooqexample.gen.tables.Request;
+import de.inverso.jooqexample.gen.tables.records.BrokerRecord;
 
 
 /**

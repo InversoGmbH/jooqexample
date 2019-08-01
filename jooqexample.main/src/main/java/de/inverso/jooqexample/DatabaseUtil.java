@@ -23,16 +23,18 @@ public final class DatabaseUtil {
         return factory.createEntityManager();
     }
 
-    public static <E> List nativeQueryWithEntity(EntityManager em, org.jooq.Query query, Class<E> type) {
+    @SuppressWarnings("unchecked")
+	public static <E> List<E> nativeQueryWithEntity(EntityManager em, org.jooq.Query query, Class<E> type) {
         // There's an unsafe cast here, but we can be sure that we'll get the right type from JPA
         Query result = em.createNativeQuery(query.getSQL(), type);
 
-        return bindParameters(result, query).getResultList();
+        return (List<E>) bindParameters(result, query).getResultList();
     }
 
-    public static <E> List<E> nativeQueryWithDTO(EntityManager em, org.jooq.Query query, Class<E> type) {
+    @SuppressWarnings({ "deprecation", "unchecked" })
+	public static <E> List<E> nativeQueryWithDTO(EntityManager em, org.jooq.Query query, Class<E> type) {
         Query result = em.createNativeQuery(query.getSQL());
-        return bindParameters(result, query) //
+        return (List<E>) bindParameters(result, query) //
                 .unwrap(org.hibernate.query.Query.class) //
                 .setResultTransformer(Transformers.aliasToBean(type)).getResultList();
     }

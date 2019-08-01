@@ -15,7 +15,8 @@ import org.junit.runner.RunWith;
         UseCaseTest.class,
         BasicSelectionTest.class,
         GeneratedClassesTest.class,
-        ResultProcessingTest.class
+        ResultProcessingTest.class,
+        InterActionTest.class
 })
 public class JooqExampleSuite {
 

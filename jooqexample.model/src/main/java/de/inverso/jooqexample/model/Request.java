@@ -15,7 +15,8 @@ import java.util.Set;
 public class Request {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @ManyToOne()

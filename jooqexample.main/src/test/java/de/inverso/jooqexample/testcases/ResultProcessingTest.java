@@ -41,9 +41,10 @@ public class ResultProcessingTest extends AbstractTest {
             return DSL.using(connection).selectFrom(PERSON.join(BANK_DETAILS).on(BANK_DETAILS.PERSON_ID.eq(PERSON.ID))).fetchLazy();
         });
 
-        results.stream().forEach( record -> {
-            LOGGER.info(record.get(PERSON.FIRSTNAME) + " " + record.get("LASTNAME") + " " + record.get(BANK_DETAILS.ID));
-        } );
+        while(results.hasNext()) {
+        	Record record = results.fetchNext();
+        	LOGGER.info(record.get(PERSON.FIRSTNAME) + " " + record.get("LASTNAME") + " " + record.get(BANK_DETAILS.ID));
+        }        
         entityManager.close();
     }
 

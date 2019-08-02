@@ -8,7 +8,7 @@
 group 'de.inverso'
 version '1.0-SNAPSHOT'
 
-
+apply plugin: 'eclipse'
 
 allprojects {
     repositories {

@@ -25,6 +25,7 @@ public abstract class AbstractTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
 
     public static final Integer PERSON_AMOUNT = 1000;
+    public static final int REQUEST_AMOUNT = 10000;
 
     private static Boolean initialized = false;
 
@@ -114,7 +115,7 @@ public abstract class AbstractTest {
 
         final List<Product> products = getAllProducts(e);
         final List<Person> persons = e.createNamedQuery("persons", Person.class).getResultList();
-        for (int i = 0; i < fairy.baseProducer().randomBetween(10, 10000); i++) {
+        for (int i = 0; i < REQUEST_AMOUNT; i++) {
             Request a = new Request();
             a.setCreationDate(fairy.dateProducer().randomDateInThePast(1).toLocalDate());
             var requestCandidates = List.of(fairy.baseProducer().numerify("SA###########"), fairy.baseProducer().numerify("KR###########"));

@@ -11,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "REQUEST")
-@NamedQuery(name = "requestWithProducts", query = "SELECT r from Request r join r.products")
+@NamedQuery(name = "requestWithProducts", query = "SELECT r from Request r join fetch r.products")
 public class Request {
 
     @Id
